@@ -1,10 +1,11 @@
 'use strict';
 
 import React from 'react';
-import { Translation } from './i18n';
+import { Translation } from '@/lib/i18n';
+import { FormField, SubmitButton, GlassCard } from '@/components';
 import { Sparkles } from 'lucide-react';
 
-interface ThemeViewProps {
+interface ThemePageProps {
   t: (key: keyof Translation) => string;
   themes: any[];
   theme: any;
@@ -14,7 +15,7 @@ interface ThemeViewProps {
   handleActivateTheme: (id: string) => void;
 }
 
-export default function ThemeView({
+export default function ThemePage({
   t,
   themes,
   theme,
@@ -22,96 +23,45 @@ export default function ThemeView({
   setNewTheme,
   handleCreateTheme,
   handleActivateTheme,
-}: ThemeViewProps) {
+}: ThemePageProps) {
   return (
     <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         {/* Form to Custom Theme Creator */}
-        <div className="glass-card p-6 rounded-3xl h-fit">
+        <GlassCard className="p-6 h-fit">
           <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-emerald-600" />
             {t('themeCustomizer')}
           </h3>
           <form onSubmit={handleCreateTheme} className="space-y-4">
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{t('themeName')}</label>
-              <input 
-                type="text" required placeholder="e.g. Lime Forest"
-                value={newTheme.name} 
-                onChange={e => setNewTheme({...newTheme, name: e.target.value})} 
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-emerald-600 text-sm bg-white/50" 
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{t('primaryColor')}</label>
+            <FormField label={t('themeName')}>
+              <input type="text" required placeholder="e.g. Lime Forest" value={newTheme.name} onChange={e => setNewTheme({...newTheme, name: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-emerald-600 text-sm bg-white/50" />
+            </FormField>
+            <FormField label={t('primaryColor')}>
               <div className="flex gap-2">
-                <input 
-                  type="color" 
-                  value={newTheme.primaryColor} 
-                  onChange={e => setNewTheme({...newTheme, primaryColor: e.target.value})} 
-                  className="w-11 h-11 border border-gray-200 rounded-xl cursor-pointer p-1 bg-white" 
-                />
-                <input 
-                  type="text" 
-                  value={newTheme.primaryColor} 
-                  onChange={e => setNewTheme({...newTheme, primaryColor: e.target.value})} 
-                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none text-sm bg-white/50" 
-                />
+                <input type="color" value={newTheme.primaryColor} onChange={e => setNewTheme({...newTheme, primaryColor: e.target.value})} className="w-11 h-11 border border-gray-200 rounded-xl cursor-pointer p-1 bg-white" />
+                <input type="text" value={newTheme.primaryColor} onChange={e => setNewTheme({...newTheme, primaryColor: e.target.value})} className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none text-sm bg-white/50" />
               </div>
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{t('secondaryColor')}</label>
+            </FormField>
+            <FormField label={t('secondaryColor')}>
               <div className="flex gap-2">
-                <input 
-                  type="color" 
-                  value={newTheme.secondaryColor} 
-                  onChange={e => setNewTheme({...newTheme, secondaryColor: e.target.value})} 
-                  className="w-11 h-11 border border-gray-200 rounded-xl cursor-pointer p-1 bg-white" 
-                />
-                <input 
-                  type="text" 
-                  value={newTheme.secondaryColor} 
-                  onChange={e => setNewTheme({...newTheme, secondaryColor: e.target.value})} 
-                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none text-sm bg-white/50" 
-                />
+                <input type="color" value={newTheme.secondaryColor} onChange={e => setNewTheme({...newTheme, secondaryColor: e.target.value})} className="w-11 h-11 border border-gray-200 rounded-xl cursor-pointer p-1 bg-white" />
+                <input type="text" value={newTheme.secondaryColor} onChange={e => setNewTheme({...newTheme, secondaryColor: e.target.value})} className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none text-sm bg-white/50" />
               </div>
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{t('backgroundColor')}</label>
+            </FormField>
+            <FormField label={t('backgroundColor')}>
               <div className="flex gap-2">
-                <input 
-                  type="color" 
-                  value={newTheme.backgroundColor} 
-                  onChange={e => setNewTheme({...newTheme, backgroundColor: e.target.value})} 
-                  className="w-11 h-11 border border-gray-200 rounded-xl cursor-pointer p-1 bg-white" 
-                />
-                <input 
-                  type="text" 
-                  value={newTheme.backgroundColor} 
-                  onChange={e => setNewTheme({...newTheme, backgroundColor: e.target.value})} 
-                  className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none text-sm bg-white/50" 
-                />
+                <input type="color" value={newTheme.backgroundColor} onChange={e => setNewTheme({...newTheme, backgroundColor: e.target.value})} className="w-11 h-11 border border-gray-200 rounded-xl cursor-pointer p-1 bg-white" />
+                <input type="text" value={newTheme.backgroundColor} onChange={e => setNewTheme({...newTheme, backgroundColor: e.target.value})} className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none text-sm bg-white/50" />
               </div>
-            </div>
-            <div>
-              <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5">{t('logoUrl')}</label>
-              <input 
-                type="text" placeholder="https://url-to-your-logo.png"
-                value={newTheme.logoUrl} 
-                onChange={e => setNewTheme({...newTheme, logoUrl: e.target.value})} 
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-emerald-600 text-sm bg-white/50" 
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="w-full py-3.5 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg mt-2 cursor-pointer"
-              style={{ backgroundColor: 'var(--primary-color)' }}
-            >
-              {t('save')} Theme
-            </button>
+            </FormField>
+            <FormField label={t('logoUrl')}>
+              <input type="text" placeholder="https://url-to-your-logo.png" value={newTheme.logoUrl} onChange={e => setNewTheme({...newTheme, logoUrl: e.target.value})} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-emerald-600 text-sm bg-white/50" />
+            </FormField>
+            <SubmitButton label={`${t('save')} Theme`} />
           </form>
-        </div>
+        </GlassCard>
 
         {/* Theme Selection Board */}
         <div className="lg:col-span-2 glass-card p-6 rounded-3xl">
@@ -124,7 +74,7 @@ export default function ThemeView({
                   {themeItem.isActive ? (
                     <span className="px-2.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-bold rounded-full" style={{ color: 'var(--primary-color)', backgroundColor: 'var(--secondary-color)' }}>{t('activeLabel')}</span>
                   ) : (
-                    <button 
+                    <button
                       onClick={() => handleActivateTheme(themeItem.id)}
                       className="px-2.5 py-0.5 bg-gray-100 hover:bg-emerald-700 hover:text-white text-[10px] text-gray-600 font-bold rounded-full transition-colors cursor-pointer"
                     >
@@ -132,7 +82,6 @@ export default function ThemeView({
                     </button>
                   )}
                 </div>
-
                 {/* Colors Preview Blocks */}
                 <div className="flex gap-2.5">
                   <div className="w-9 h-9 rounded-xl shadow-sm border border-gray-200/50" style={{ backgroundColor: themeItem.primaryColor }} title={t('primaryLabel')} />
@@ -141,7 +90,7 @@ export default function ThemeView({
                 </div>
               </div>
             ))}
-            
+
             {/* Default Fallback representation */}
             <div className="border border-emerald-100 bg-emerald-50/20 rounded-2xl p-5 space-y-4" style={{ borderColor: 'var(--secondary-color)' }}>
               <div className="flex items-center justify-between">

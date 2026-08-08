@@ -1,29 +1,30 @@
 'use client';
 
 import React from 'react';
-import { Translation } from './i18n';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  Activity, 
+import { Translation } from '@/lib/i18n';
+import { StatCard } from '@/components';
+import {
+  DollarSign,
+  TrendingUp,
+  Activity,
   Store,
   ArrowUpRight,
   ArrowDownRight,
   Layers,
   Package
 } from 'lucide-react';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   Legend
 } from 'recharts';
 
-interface DashboardViewProps {
+interface DashboardPageProps {
   t: (key: keyof Translation) => string;
   salesAnalytics: any;
   accountsSummary: any;
@@ -32,17 +33,17 @@ interface DashboardViewProps {
   currentChartData: any[];
 }
 
-export default function DashboardView({
+export default function DashboardPage({
   t,
   salesAnalytics,
   accountsSummary,
   batches,
   medicines,
   currentChartData
-}: DashboardViewProps) {
+}: DashboardPageProps) {
   return (
     <div className="space-y-8 max-w-7.5xl mx-auto animate-fade-in">
-      
+
       {/* Info Banner */}
       <div className="relative overflow-hidden rounded-3xl p-8 sm:p-10 text-white shadow-xl premium-shadow" style={{ backgroundColor: 'var(--primary-color)' }}>
         <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-80 h-80 bg-white/10 rounded-full opacity-20 blur-3xl"></div>
@@ -66,59 +67,46 @@ export default function DashboardView({
 
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="glass-card p-6 rounded-3xl flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-          <div>
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('payable')}</span>
-            <h3 className="text-2xl font-bold text-gray-800 mt-1.5 tracking-tight">${accountsSummary.payable?.outstanding || '85,420'}</h3>
-            <span className="text-[11px] text-red-600 flex items-center gap-1 font-semibold mt-2 px-2 py-0.5 bg-red-50 rounded-full w-fit">
+        <StatCard
+          label={t('payable')}
+          value={`$${accountsSummary.payable?.outstanding || '85,420'}`}
+          badge={
+            <span className="text-[11px] text-red-600 flex items-center gap-1 font-semibold px-2 py-0.5 bg-red-50 rounded-full w-fit">
               <ArrowUpRight className="w-3 h-3" /> {t('dueThisMonth')}
             </span>
-          </div>
-          <div className="p-4 bg-red-50 text-red-600 rounded-2xl shadow-inner">
-            <DollarSign className="w-6 h-6" />
-          </div>
-        </div>
-
-        <div className="glass-card p-6 rounded-3xl flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-          <div>
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('receivable')}</span>
-            <h3 className="text-2xl font-bold text-gray-800 mt-1.5 tracking-tight">${accountsSummary.receivable?.outstanding || '120,380'}</h3>
-            <span className="text-[11px] text-emerald-600 flex items-center gap-1 font-semibold mt-2 px-2 py-0.5 bg-emerald-50 rounded-full w-fit">
+          }
+          icon={<div className="p-4 bg-red-50 text-red-600 rounded-2xl shadow-inner"><DollarSign className="w-6 h-6" /></div>}
+        />
+        <StatCard
+          label={t('receivable')}
+          value={`$${accountsSummary.receivable?.outstanding || '120,380'}`}
+          badge={
+            <span className="text-[11px] text-emerald-600 flex items-center gap-1 font-semibold px-2 py-0.5 bg-emerald-50 rounded-full w-fit">
               <ArrowDownRight className="w-3 h-3" /> {t('incomingFunds')}
             </span>
-          </div>
-          <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl shadow-inner">
-            <TrendingUp className="w-6 h-6" />
-          </div>
-        </div>
-
-        <div className="glass-card p-6 rounded-3xl flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-          <div>
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('batches')}</span>
-            <h3 className="text-2xl font-bold text-gray-800 mt-1.5 tracking-tight">
-              {batches.filter(b => b.status === 'IN_PROCESS').length || '12'}
-            </h3>
-            <span className="text-[11px] text-blue-600 flex items-center gap-1 font-semibold mt-2 px-2 py-0.5 bg-blue-50 rounded-full w-fit">
+          }
+          icon={<div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl shadow-inner"><TrendingUp className="w-6 h-6" /></div>}
+        />
+        <StatCard
+          label={t('batches')}
+          value={batches.filter(b => b.status === 'IN_PROCESS').length || '12'}
+          badge={
+            <span className="text-[11px] text-blue-600 flex items-center gap-1 font-semibold px-2 py-0.5 bg-blue-50 rounded-full w-fit">
               <Activity className="w-3 h-3" /> {t('inProductionLine')}
             </span>
-          </div>
-          <div className="p-4 bg-blue-50 text-blue-600 rounded-2xl shadow-inner">
-            <Layers className="w-6 h-6" />
-          </div>
-        </div>
-
-        <div className="glass-card p-6 rounded-3xl flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-          <div>
-            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('store')}</span>
-            <h3 className="text-2xl font-bold text-gray-800 mt-1.5 tracking-tight">{medicines.length || '186'}</h3>
-            <span className="text-[11px] text-purple-600 flex items-center gap-1 font-semibold mt-2 px-2 py-0.5 bg-purple-50 rounded-full w-fit">
+          }
+          icon={<div className="p-4 bg-blue-50 text-blue-600 rounded-2xl shadow-inner"><Layers className="w-6 h-6" /></div>}
+        />
+        <StatCard
+          label={t('store')}
+          value={medicines.length || '186'}
+          badge={
+            <span className="text-[11px] text-purple-600 flex items-center gap-1 font-semibold px-2 py-0.5 bg-purple-50 rounded-full w-fit">
               <Package className="w-3 h-3" /> {t('itemsMonitored')}
             </span>
-          </div>
-          <div className="p-4 bg-purple-50 text-purple-600 rounded-2xl shadow-inner">
-            <Store className="w-6 h-6" />
-          </div>
-        </div>
+          }
+          icon={<div className="p-4 bg-purple-50 text-purple-600 rounded-2xl shadow-inner"><Store className="w-6 h-6" /></div>}
+        />
       </div>
 
       {/* Analytics Graph Section */}
@@ -129,7 +117,7 @@ export default function DashboardView({
             <p className="text-xs text-gray-400 mt-0.5">{t('revenueTrendSubtitle')}</p>
           </div>
         </div>
-        
+
         <div className="h-[400px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={currentChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>

@@ -1,9 +1,10 @@
 'use strict';
 
 import React, { useState } from 'react';
-import { Translation } from './i18n';
+import { Translation } from '@/lib/i18n';
+import { PageHeader, GlassCard, StatusBadge } from '@/components';
 
-interface AccountsViewProps {
+interface AccountsPageProps {
   t: (key: keyof Translation) => string;
   payables: any[];
   receivables: any[];
@@ -12,29 +13,27 @@ interface AccountsViewProps {
   handleReceivePayment: (id: string, amount: number) => void;
 }
 
-export default function AccountsView({
+export default function AccountsPage({
   t,
   payables,
   receivables,
   accountsSummary,
   handlePayBill,
   handleReceivePayment,
-}: AccountsViewProps) {
+}: AccountsPageProps) {
   // Local state to control active account display filter: 'all' | 'payables' | 'receivables'
   const [filterType, setFilterType] = useState<'all' | 'payables' | 'receivables'>('all');
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
-      
+
       {/* Header and Dropdown Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-card p-6 rounded-3xl">
-        <div>
-          <h2 className="text-xl font-bold text-gray-800 tracking-tight">Accounts Overview</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Filter and manage payable/receivable balances and transactions</p>
-        </div>
-        <div>
-          <select 
-            value={filterType} 
+      <PageHeader
+        title="Accounts Overview"
+        subtitle="Filter and manage payable/receivable balances and transactions"
+        actions={
+          <select
+            value={filterType}
             onChange={(e) => setFilterType(e.target.value as any)}
             className="px-4 py-2.5 border border-gray-200 rounded-xl bg-white text-sm font-semibold focus:outline-none focus:border-emerald-600 text-gray-700 cursor-pointer shadow-sm"
           >
@@ -42,27 +41,27 @@ export default function AccountsView({
             <option value="payables">Show Accounts Payable Only</option>
             <option value="receivables">Show Accounts Receivable Only</option>
           </select>
-        </div>
-      </div>
-      
+        }
+      />
+
       {/* Financial Balance Summary Card */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="glass-card p-6 rounded-3xl">
+        <GlassCard className="p-6">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('totalCashOutflow')}</span>
           <h3 className="text-3xl font-extrabold text-red-600 mt-2.5 tracking-tight">${accountsSummary.payable?.total || '42,500'}</h3>
           <div className="mt-4 flex items-center justify-between text-xs font-semibold text-gray-500 border-t border-gray-100 pt-3">
             <span>{t('paid')}: ${accountsSummary.payable?.paid || '0'}</span>
             <span>{t('outstandingLabel')}: ${accountsSummary.payable?.outstanding || '42,500'}</span>
           </div>
-        </div>
-        <div className="glass-card p-6 rounded-3xl">
+        </GlassCard>
+        <GlassCard className="p-6">
           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('totalCashInflow')}</span>
           <h3 className="text-3xl font-extrabold text-emerald-600 mt-2.5 tracking-tight">${accountsSummary.receivable?.total || '118,200'}</h3>
           <div className="mt-4 flex items-center justify-between text-xs font-semibold text-gray-500 border-t border-gray-100 pt-3">
             <span>{t('received')}: ${accountsSummary.receivable?.paid || '0'}</span>
             <span>{t('outstandingLabel')}: ${accountsSummary.receivable?.outstanding || '118,200'}</span>
           </div>
-        </div>
+        </GlassCard>
         <div className="p-6 rounded-3xl text-white shadow-xl premium-shadow" style={{ backgroundColor: 'var(--primary-color)' }}>
           <span className="text-[10px] font-bold text-emerald-200 uppercase tracking-widest">{t('netCashFlowBalance')}</span>
           <h3 className="text-3xl font-extrabold mt-2.5 tracking-tight">${accountsSummary.cashFlow || '75,700'}</h3>
@@ -72,7 +71,7 @@ export default function AccountsView({
 
       {/* Lists Grid Filtered dynamically */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
+
         {/* Accounts Payable list */}
         {(filterType === 'all' || filterType === 'payables') && (
           <div className={`glass-card rounded-3xl overflow-hidden flex flex-col ${filterType === 'payables' ? 'lg:col-span-2' : ''}`}>
@@ -97,13 +96,11 @@ export default function AccountsView({
                       <td className="px-6 py-4.5 font-bold text-gray-800">{item.purchase?.vendor?.name}</td>
                       <td className="px-6 py-4.5 text-right font-extrabold text-gray-700">${item.amount}</td>
                       <td className="px-6 py-4.5 text-center">
-                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${item.status === 'PAID' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
-                          {item.status}
-                        </span>
+                        <StatusBadge status={item.status} variant={item.status === 'PAID' ? 'success' : 'danger'} />
                       </td>
                       <td className="px-6 py-4.5 text-right">
                         {item.status !== 'PAID' && (
-                          <button 
+                          <button
                             onClick={() => handlePayBill(item.id, item.amount - item.paidAmount)}
                             className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl transition-all shadow hover:shadow-lg cursor-pointer"
                           >
@@ -148,13 +145,11 @@ export default function AccountsView({
                       <td className="px-6 py-4.5 font-bold text-gray-800">{item.sale?.customer?.name}</td>
                       <td className="px-6 py-4.5 text-right font-extrabold text-gray-700">${item.amount}</td>
                       <td className="px-6 py-4.5 text-center">
-                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${item.status === 'PAID' ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-red-50 text-red-700 border border-red-100'}`} style={{ color: item.status === 'PAID' ? 'var(--primary-color)' : undefined }}>
-                          {item.status}
-                        </span>
+                        <StatusBadge status={item.status} variant={item.status === 'PAID' ? 'success' : 'danger'} />
                       </td>
                       <td className="px-6 py-4.5 text-right">
                         {item.status !== 'PAID' && (
-                          <button 
+                          <button
                             onClick={() => handleReceivePayment(item.id, item.amount - item.paidAmount)}
                             className="px-3 py-1.5 text-white font-bold text-xs rounded-xl transition-all shadow hover:shadow-lg cursor-pointer"
                             style={{ backgroundColor: 'var(--primary-color)' }}

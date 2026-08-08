@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getTranslation, Language } from './i18n';
-import { api } from './api';
+import { getTranslation, Language } from '@/lib/i18n';
+import { api } from '@/lib/api';
+import { Sidebar, TopBar } from '@/components';
 import { 
   LayoutDashboard, 
   Store, 
@@ -10,20 +11,19 @@ import {
   BadgePercent, 
   Activity, 
   Wallet, 
-  Palette, 
-  Globe, 
-  Menu, 
-  X 
+  Palette 
 } from 'lucide-react';
 
-// Import sub-views
-import DashboardView from './DashboardView';
-import StoreView from './StoreView';
-import PurchaseView from './PurchaseView';
-import SalesView from './SalesView';
-import ProductionView from './ProductionView';
-import AccountsView from './AccountsView';
-import ThemeView from './ThemeView';
+// Import page views from pages folder
+import { 
+  DashboardPage,
+  StorePage,
+  PurchasePage,
+  SalesPage,
+  ProductionPage,
+  AccountsPage,
+  ThemePage,
+} from '@/views';
 
 export default function SpansulesDashboard() {
   const [lang, setLang] = useState<Language>('en');
@@ -254,92 +254,18 @@ export default function SpansulesDashboard() {
   return (
     <div className="flex h-screen overflow-hidden" style={{ backgroundColor: 'var(--background)', fontFamily: 'var(--font-family)' }}>
       
-      {/* SIDEBAR */}
-      <aside 
-        className={`fixed inset-y-0 left-0 z-30 w-72 flex flex-col text-white shadow-xl transition-all duration-300 transform lg:static lg:translate-x-0 ${
-          isSidebarOpen ? 'translate-x-0 lg:w-72 lg:opacity-100' : '-translate-x-full lg:-ml-72 lg:opacity-0 lg:pointer-events-none'
-        }`} 
-        style={{ backgroundColor: 'var(--primary-color)' }}
-      >
-        {/* Sidebar Header / Brand */}
-        <div className="p-6 border-b border-white/10 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            {theme.logoUrl ? (
-              <img src={theme.logoUrl} alt="Logo" className="w-10 h-10 object-contain rounded bg-white p-1" />
-            ) : (
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white text-emerald-900 font-bold text-xl shadow-md" style={{ color: 'var(--primary-color)' }}>
-                S
-              </div>
-            )}
-            <div>
-              <h1 className="text-xl font-bold tracking-wider">SPANSULES</h1>
-              <p className="text-xs text-white/70 font-medium">Pharmacy Admin Panel</p>
-            </div>
-          </div>
-          {/* Close Sidebar button */}
-          <button 
-            onClick={() => setIsSidebarOpen(false)} 
-            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-        </div>
-
-        {/* Navigation Items */}
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-          {sidebarModules.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeModule === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => {
-                  changeModule(item.id);
-                  if (window.innerWidth < 1024) {
-                    setIsSidebarOpen(false);
-                  }
-                }}
-                className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer ${
-                  isActive 
-                    ? 'shadow-lg translate-x-1' 
-                    : 'text-white/80 hover:bg-white/10 hover:text-white'
-                }`}
-                style={{ 
-                  backgroundColor: isActive ? 'var(--secondary-color)' : undefined,
-                  color: isActive ? 'var(--primary-color)' : undefined
-                }}
-              >
-                <Icon className="w-5 h-5 flex-shrink-0" />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        {/* Sidebar Footer with Language Switcher */}
-        <div className="p-6 border-t border-white/10 flex flex-col gap-4">
-          <div className="flex items-center justify-between text-xs text-white/80">
-            <span className="flex items-center gap-1.5 font-medium">
-              <Globe className="w-4 h-4" />
-              {t('language')}
-            </span>
-            <div className="flex bg-black/20 p-0.5 rounded-lg border border-white/10">
-              <button 
-                onClick={() => setLang('en')} 
-                className={`px-2.5 py-1 rounded-md transition-all font-semibold cursor-pointer ${lang === 'en' ? 'bg-white/20 text-white shadow-sm' : 'text-white/60 hover:text-white'}`}
-              >
-                EN
-              </button>
-              <button 
-                onClick={() => setLang('te')} 
-                className={`px-2.5 py-1 rounded-md transition-all font-semibold cursor-pointer ${lang === 'te' ? 'bg-white/20 text-white shadow-sm' : 'text-white/60 hover:text-white'}`}
-              >
-                తెలుగు
-              </button>
-            </div>
-          </div>
-        </div>
-      </aside>
+      {/* SIDEBAR COMPONENT */}
+      <Sidebar
+        modules={sidebarModules}
+        activeModule={activeModule}
+        onModuleChange={changeModule}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        theme={theme}
+        lang={lang}
+        onLangChange={setLang}
+        t={t}
+      />
 
       {/* OVERLAY FOR MOBILE SIDEBAR */}
       {isSidebarOpen && (
@@ -351,44 +277,18 @@ export default function SpansulesDashboard() {
 
       {/* MAIN CONTAINER */}
       <main className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
-        {/* TOP BAR */}
-        <header className="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-4 sm:px-8 shadow-sm z-10">
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
-              className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 transition-colors cursor-pointer"
-            >
-              <Menu className="w-5 h-5 text-gray-700" />
-            </button>
-
-            <div className="flex items-center gap-3">
-              <span className="font-semibold text-base sm:text-lg text-gray-800 capitalize tracking-wide hidden sm:inline">
-                {activeModule === 'dashboard' ? t('dashboard') : t(activeModule as any)}
-              </span>
-              <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-semibold rounded-full border border-emerald-100">
-                Admin
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-3.5 border-l border-gray-100 pl-6">
-              <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold border border-emerald-100 shadow-inner">
-                AD
-              </div>
-              <div className="text-left hidden md:block">
-                <p className="text-sm font-bold text-gray-800">Admin Director</p>
-                <p className="text-xs text-gray-400">admin@spansules.com</p>
-              </div>
-            </div>
-          </div>
-        </header>
+        {/* TOP BAR COMPONENT */}
+        <TopBar
+          activeModule={activeModule}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          t={t}
+        />
 
         {/* SCROLLABLE MAIN CONTENT */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-gray-50/50">
 
           {activeModule === 'dashboard' && (
-            <DashboardView 
+            <DashboardPage 
               t={t}
               salesAnalytics={salesAnalytics}
               accountsSummary={accountsSummary}
@@ -399,7 +299,7 @@ export default function SpansulesDashboard() {
           )}
 
           {activeModule === 'store' && (
-            <StoreView 
+            <StorePage 
               t={t}
               medicines={medicines}
               newMedicine={newMedicine}
@@ -409,7 +309,7 @@ export default function SpansulesDashboard() {
           )}
 
           {activeModule === 'purchase' && (
-            <PurchaseView 
+            <PurchasePage 
               t={t}
               vendors={vendors}
               medicines={medicines}
@@ -423,7 +323,7 @@ export default function SpansulesDashboard() {
           )}
 
           {activeModule === 'sales' && (
-            <SalesView 
+            <SalesPage 
               t={t}
               customers={customers}
               newCustomer={newCustomer}
@@ -437,7 +337,7 @@ export default function SpansulesDashboard() {
           )}
 
           {activeModule === 'production' && (
-            <ProductionView 
+            <ProductionPage 
               t={t}
               batches={batches}
               medicines={medicines}
@@ -450,7 +350,7 @@ export default function SpansulesDashboard() {
           )}
 
           {activeModule === 'accounts' && (
-            <AccountsView 
+            <AccountsPage 
               t={t}
               payables={payables}
               receivables={receivables}
@@ -461,7 +361,7 @@ export default function SpansulesDashboard() {
           )}
 
           {activeModule === 'theme' && (
-            <ThemeView 
+            <ThemePage 
               t={t}
               themes={themes}
               theme={theme}
