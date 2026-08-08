@@ -20,6 +20,13 @@
   --font-body: var(--font-body-en);
 }
 
+.dark {
+  --background: #0b0f19;
+  --foreground: #f8fafc;
+  --primary-color: #10b981;
+  --secondary-color: rgba(16, 185, 129, 0.15);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,6 +39,15 @@ body {
   font-family: var(--font-body);
   overflow-x: hidden;
   letter-spacing: -0.01em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark body {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
+  background-attachment: fixed;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -46,6 +62,13 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.04);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark .glass-card {
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
 }
 
 /* Soft shadows for professional layout depth */
@@ -53,17 +76,41 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.02), 0 2px 8px -1px rgba(15, 23, 42, 0.01);
 }
 
+.dark .soft-shadow {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
 .premium-shadow {
   box-shadow: 0 20px 40px -15px rgba(15, 81, 50, 0.08);
 }
 
+.dark .premium-shadow {
+  box-shadow: 0 20px 50px -10px rgba(16, 185, 129, 0.15);
+}
+
 /* Input styles */
 input, select, textarea {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 4px rgba(15, 81, 50, 0.1);
   border-color: var(--primary-color) !important;
+}
+
+.dark input, .dark select, .dark textarea {
+  background-color: rgba(17, 24, 39, 0.5) !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark input:focus, .dark select:focus, .dark textarea:focus {
+  box-shadow: 0 0 0 4px rgba(10, 185, 129, 0.2);
+  background-color: rgba(17, 24, 39, 0.8) !important;
+}
+
+.dark select option {
+  background-color: #0b0f19;
+  color: #f8fafc;
 }
 
 /* Global cursor overrides */

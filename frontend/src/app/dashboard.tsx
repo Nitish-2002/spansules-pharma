@@ -54,6 +54,35 @@ export default function SpansulesDashboard() {
   // Sidebar toggle state
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
+  // Dark theme toggle state
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        setIsDarkMode(true);
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextVal = !isDarkMode;
+    setIsDarkMode(nextVal);
+    if (typeof window !== 'undefined') {
+      if (nextVal) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+  };
+
   // Dynamic Theme state (read from database and update CSS Custom Properties)
   const [theme, setTheme] = useState({
     primaryColor: '#0f5132',
@@ -282,6 +311,8 @@ export default function SpansulesDashboard() {
           activeModule={activeModule}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           t={t}
+          isDarkMode={isDarkMode}
+          onToggleTheme={toggleTheme}
         />
 
         {/* SCROLLABLE MAIN CONTENT */}
