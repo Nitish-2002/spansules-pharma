@@ -29,8 +29,27 @@ export default function SpansulesDashboard() {
   const [lang, setLang] = useState<Language>('en');
   const t = getTranslation(lang);
 
-  // Active module
+  // Active module synced to URL query parameter
   const [activeModule, setActiveModule] = useState<string>('dashboard');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const mod = params.get('module');
+      if (mod) {
+        setActiveModule(mod);
+      }
+    }
+  }, []);
+
+  const changeModule = (moduleName: string) => {
+    setActiveModule(moduleName);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('module', moduleName);
+      window.history.pushState({}, '', url.toString());
+    }
+  };
 
   // Sidebar toggle state
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
@@ -41,7 +60,7 @@ export default function SpansulesDashboard() {
     secondaryColor: '#d1e7dd',
     backgroundColor: '#f8fafc',
     fontFamily: "'Outfit', sans-serif",
-    logoUrl: ''
+    logoUrl: '/images/logo.png'
   });
 
   // Data states
@@ -60,7 +79,7 @@ export default function SpansulesDashboard() {
   const [newVendor, setNewVendor] = useState({ name: '', code: '', contact: '', email: '', phone: '', address: '' });
   const [newCustomer, setNewCustomer] = useState({ name: '', code: '', contact: '', email: '', phone: '', address: '' });
   const [newBatch, setNewBatch] = useState({ batchNumber: '', medicineId: '', quantity: 100 });
-  const [newTheme, setNewTheme] = useState({ name: '', primaryColor: '#0f5132', secondaryColor: '#d1e7dd', backgroundColor: '#f8fafc', fontFamily: "'Outfit', sans-serif", logoUrl: '' });
+  const [newTheme, setNewTheme] = useState({ name: '', primaryColor: '#0f5132', secondaryColor: '#d1e7dd', backgroundColor: '#f8fafc', fontFamily: "'Outfit', sans-serif", logoUrl: '/images/logo.png' });
   
   // Transactions form states
   const [newOrder, setNewOrder] = useState({ vendorId: '', poNumber: '', orderDate: new Date().toISOString().split('T')[0], items: [{ medicineId: '', quantity: 10, price: 100 }] });
@@ -76,7 +95,7 @@ export default function SpansulesDashboard() {
           secondaryColor: activeThemeData.secondaryColor || '#d1e7dd',
           backgroundColor: activeThemeData.backgroundColor || '#f8fafc',
           fontFamily: activeThemeData.fontFamily || "'Outfit', sans-serif",
-          logoUrl: activeThemeData.logoUrl || ''
+          logoUrl: activeThemeData.logoUrl || '/images/logo.png'
         });
       }
 
@@ -165,7 +184,7 @@ export default function SpansulesDashboard() {
   const handleCreateTheme = async (e: React.FormEvent) => {
     e.preventDefault();
     await api.createTheme(newTheme);
-    setNewTheme({ name: '', primaryColor: '#0f5132', secondaryColor: '#d1e7dd', backgroundColor: '#f8fafc', fontFamily: "'Outfit', sans-serif", logoUrl: '' });
+    setNewTheme({ name: '', primaryColor: '#0f5132', secondaryColor: '#d1e7dd', backgroundColor: '#f8fafc', fontFamily: "'Outfit', sans-serif", logoUrl: '/images/logo.png' });
     loadData();
   };
 
@@ -246,7 +265,7 @@ export default function SpansulesDashboard() {
         <div className="p-6 border-b border-white/10 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             {theme.logoUrl ? (
-              <img src={theme.logoUrl} alt="Logo" className="w-10 h-10 object-contain rounded" />
+              <img src={theme.logoUrl} alt="Logo" className="w-10 h-10 object-contain rounded bg-white p-1" />
             ) : (
               <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white text-emerald-900 font-bold text-xl shadow-md" style={{ color: 'var(--primary-color)' }}>
                 S
@@ -275,7 +294,7 @@ export default function SpansulesDashboard() {
               <button
                 key={item.id}
                 onClick={() => {
-                  setActiveModule(item.id);
+                  changeModule(item.id);
                   if (window.innerWidth < 1024) {
                     setIsSidebarOpen(false);
                   }
