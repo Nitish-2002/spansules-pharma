@@ -1,0 +1,185 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// 1. Theme Module
+model Theme {
+  id              String   @id @default(uuid())
+  name            String   @unique
+  primaryColor    String   // Green dark hex
+  secondaryColor  String   // Green light hex
+  backgroundColor String   // White or light background hex
+  fontFamily      String   @default("Inter")
+  logoUrl         String?
+  isActive        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// 2. Store Module (Medicines and Items)
+enum ItemType {
+  RAW_MATERIAL
+  PACKAGING
+  SEMI_FINISHED_GOODS
+  FINISHED_GOODS
+  STATIONARY_ITEMS
+  ENGINEERING_ITEMS
+}
+
+model Medicine {
+  id          String    @id @default(uuid())
+  name        String
+  code        String    @unique
+  description String?
+  type        ItemType
+  unit        String    // e.g., kg, tablet, box, liters
+  quantity    Float     @default(0)
+  minStock    Float     @default(10.0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  batches     Batch[]
+  purchases   PurchaseItem[]
+}
+
+// 3. Purchase Module (Vendors & Inventory incoming)
+model Vendor {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  contact   String
+  email     String   @unique
+  phone     String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  purchases Purchase[]
+}
+
+model Purchase {
+  id            String         @id @default(uuid())
+  poNumber      String         @unique // Purchase Order Number
+  vendorId      String
+  vendor        Vendor         @relation(fields: [vendorId], references: [id])
+  orderDate     DateTime
+  deliveryDate  DateTime?
+  totalAmount   Float
+  status        String         @default("PENDING") // PENDING, DELIVERED, CANCELLED
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  items         PurchaseItem[]
+  
+  // Relations
+  accountPayable AccountPayable?
+}
+
+model PurchaseItem {
+  id         String   @id @default(uuid())
+  purchaseId String
+  purchase   Purchase @relation(fields: [purchaseId], references: [id])
+  medicineId String
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+  quantity   Float
+  price      Float
+  total      Float
+}
+
+// 4. Sales Module (Customers & Charts/Analytics)
+model Customer {
+  id        String   @id @default(uuid())
+  name      String
+  code      String   @unique
+  contact   String
+  email     String   @unique
+  phone     String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  sales     Sale[]
+}
+
+model Sale {
+  id               String            @id @default(uuid())
+  invoiceNumber    String            @unique
+  customerId       String
+  customer         Customer          @relation(fields: [customerId], references: [id])
+  saleDate         DateTime          @default(now())
+  totalAmount      Float
+  status           String            @default("PAID") // PAID, PARTIAL, UNPAID
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  items            SaleItem[]
+  
+  // Relations
+  accountReceivable AccountReceivable?
+}
+
+model SaleItem {
+  id       String @id @default(uuid())
+  saleId   String
+  sale     Sale   @relation(fields: [saleId], references: [id])
+  name     String // Name of sold item (can be finished good)
+  quantity Float
+  price    Float
+  total    Float
+}
+
+// 5. Production Module (In-process and Batches)
+model Batch {
+  id             String    @id @default(uuid())
+  batchNumber    String    @unique
+  medicineId     String
+  medicine       Medicine  @relation(fields: [medicineId], references: [id])
+  quantity       Float
+  status         String    @default("IN_PROCESS") // IN_PROCESS, COMPLETED, FAILED
+  startDate      DateTime  @default(now())
+  endDate        DateTime?
+  inProcessSteps InProcessStep[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model InProcessStep {
+  id          String   @id @default(uuid())
+  batchId     String
+  batch       Batch    @relation(fields: [batchId], references: [id])
+  stepName    String   // e.g., Mixing, Granulation, Compression, Coating, Packaging
+  status      String   @default("PENDING") // PENDING, ACTIVE, COMPLETED
+  operator    String
+  notes       String?
+  updatedAt   DateTime @updatedAt
+}
+
+// 6. Accounts Module (Payable & Receivable)
+model AccountPayable {
+  id          String   @id @default(uuid())
+  purchaseId  String   @unique
+  purchase    Purchase @relation(fields: [purchaseId], references: [id])
+  dueDate     DateTime
+  amount      Float
+  paidAmount  Float    @default(0)
+  status      String   @default("UNPAID") // UNPAID, PARTIAL, PAID
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AccountReceivable {
+  id          String   @id @default(uuid())
+  saleId      String   @unique
+  sale        Sale     @relation(fields: [saleId], references: [id])
+  dueDate     DateTime
+  amount      Float
+  paidAmount  Float    @default(0)
+  status      String   @default("UNPAID") // UNPAID, PARTIAL, PAID
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
