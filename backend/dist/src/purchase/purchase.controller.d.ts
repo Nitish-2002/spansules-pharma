@@ -8,8 +8,8 @@ export declare class PurchaseController {
         createdAt: Date;
         updatedAt: Date;
         code: string;
-        contact: string;
         email: string;
+        contact: string;
         phone: string;
         address: string;
     }[]>;
@@ -19,8 +19,8 @@ export declare class PurchaseController {
         createdAt: Date;
         updatedAt: Date;
         code: string;
-        contact: string;
         email: string;
+        contact: string;
         phone: string;
         address: string;
     }>;
@@ -31,8 +31,8 @@ export declare class PurchaseController {
             createdAt: Date;
             updatedAt: Date;
             code: string;
-            contact: string;
             email: string;
+            contact: string;
             phone: string;
             address: string;
         };
@@ -42,9 +42,9 @@ export declare class PurchaseController {
                 name: string;
                 createdAt: Date;
                 updatedAt: Date;
-                type: import("@prisma/client").$Enums.ItemType;
                 code: string;
                 description: string | null;
+                type: import("@prisma/client").$Enums.ItemType;
                 unit: string;
                 quantity: number;
                 minStock: number;
@@ -52,21 +52,21 @@ export declare class PurchaseController {
         } & {
             id: string;
             quantity: number;
+            medicineId: string;
             price: number;
             total: number;
-            medicineId: string;
             purchaseId: string;
         })[];
     } & {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        status: string;
         poNumber: string;
         vendorId: string;
         orderDate: Date;
         deliveryDate: Date | null;
         totalAmount: number;
-        status: string;
     })[]>;
     createOrder(data: {
         vendorId: string;
@@ -81,11 +81,11 @@ export declare class PurchaseController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
+        status: string;
         poNumber: string;
         vendorId: string;
         orderDate: Date;
         deliveryDate: Date | null;
         totalAmount: number;
-        status: string;
     }>;
 }

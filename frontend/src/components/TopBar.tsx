@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, Sun, Moon } from 'lucide-react';
+import Link from 'next/link';
+import { Menu, Sun, Moon, ExternalLink } from 'lucide-react';
 import { Translation } from '@/lib/i18n';
 
 interface TopBarProps {
@@ -38,6 +39,15 @@ export default function TopBar({
       </div>
 
       <div className="flex items-center gap-4 sm:gap-6">
+        {/* Jump to the customer-facing site */}
+        <Link
+          href="/user"
+          className="hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border border-gray-200 dark:border-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
+        >
+          <ExternalLink className="w-3.5 h-3.5" />
+          {t('viewWebsite')}
+        </Link>
+
         {/* Dark Mode Switcher Toggle Button */}
         <button
           onClick={onToggleTheme}

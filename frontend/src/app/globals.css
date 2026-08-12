@@ -4,12 +4,19 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
-  
+
   /* Brand Identity Config (can be dynamically overridden by Database config) */
   --primary-color: #0f5132;
   --secondary-color: #d1e7dd;
   --text-on-primary: #ffffff;
-  
+  --text-on-secondary: #0f172a;
+
+  /* Derived brand tokens (kept in sync by applyTheme in src/lib/theme.ts) */
+  --primary-rgb: 15 81 50;
+  --secondary-rgb: 209 231 221;
+  --theme-background: #f8fafc;
+  --theme-foreground: #0f172a;
+
   /* Typography Variables: EB Garamond for headers, Cabin for body in English; Anek Telugu globally for Telugu */
   --font-header-en: 'EB Garamond', serif;
   --font-body-en: 'Cabin', sans-serif;
@@ -120,6 +127,384 @@ input[type="submit"],
 a,
 [role="button"] {
   cursor: pointer !important;
+}
+
+/* ==========================================================================
+   Customer-facing site ("user" folder)
+   Everything below is scoped to `.user-shell` so the admin panel is untouched.
+   All colour comes from the admin-selected theme variables above.
+   ========================================================================== */
+
+/* The shell marks the body while the customer site is mounted, so the page
+   behind the layout (overscroll area) matches the site surface. */
+body[data-site='user'] {
+  background-color: var(--theme-background);
+}
+
+.dark body[data-site='user'] {
+  background-color: #070a12;
+  background-image: none;
+}
+
+.user-shell {
+  /* Surfaces & ink derive from the admin theme, so a dark brand background
+     produces light ink automatically. */
+  --surface: var(--theme-background);
+  --surface-raised: color-mix(in oklab, var(--surface) 92%, white);
+  --surface-sunken: color-mix(in oklab, var(--surface) 96%, black);
+  --ink: var(--theme-foreground);
+  --ink-muted: color-mix(in oklab, var(--ink) 65%, transparent);
+  --ink-faint: color-mix(in oklab, var(--ink) 45%, transparent);
+  --hairline: color-mix(in oklab, var(--ink) 12%, transparent);
+  --hairline-strong: color-mix(in oklab, var(--ink) 22%, transparent);
+  --brand-tint: rgb(var(--primary-rgb) / 0.07);
+  --brand-tint-strong: rgb(var(--primary-rgb) / 0.14);
+  --brand-glow: rgb(var(--primary-rgb) / 0.22);
+
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+.dark .user-shell {
+  --surface: #070a12;
+  --surface-raised: #0e1420;
+  --surface-sunken: #05080e;
+  --ink: #eef2f8;
+  --ink-muted: color-mix(in oklab, var(--ink) 62%, transparent);
+  --ink-faint: color-mix(in oklab, var(--ink) 40%, transparent);
+  --hairline: rgba(255, 255, 255, 0.09);
+  --hairline-strong: rgba(255, 255, 255, 0.18);
+  --brand-tint: rgb(var(--primary-rgb) / 0.16);
+  --brand-tint-strong: rgb(var(--primary-rgb) / 0.28);
+  --brand-glow: rgb(var(--primary-rgb) / 0.35);
+}
+
+.user-shell ::selection {
+  background: var(--brand-tint-strong);
+}
+
+/* --- Typography ---------------------------------------------------------- */
+
+.u-display {
+  font-family: var(--font-header);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  /* Telugu compounds can be long — never let a headline overflow its column */
+  overflow-wrap: break-word;
+}
+
+.u-display-xl {
+  font-size: clamp(2.75rem, 8.5vw, 6.25rem);
+}
+
+.u-display-lg {
+  font-size: clamp(2.25rem, 5.2vw, 3.9rem);
+}
+
+.u-display-md {
+  font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+}
+
+.u-serif-italic {
+  font-family: var(--font-header);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Editorial drop cap for the first paragraph of a long passage */
+.u-dropcap::first-letter {
+  font-family: var(--font-header);
+  font-size: 3.5rem;
+  line-height: 0.82;
+  float: left;
+  margin: 0.1rem 0.6rem 0 0;
+  color: var(--primary-color);
+}
+
+.u-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.u-lead {
+  font-size: clamp(1rem, 1.35vw, 1.1875rem);
+  line-height: 1.65;
+  color: var(--ink-muted);
+  text-wrap: pretty;
+}
+
+.u-numeral {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* --- Surfaces ------------------------------------------------------------ */
+
+.u-panel {
+  background-color: var(--surface-raised);
+  border: 1px solid var(--hairline);
+  transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease, background-color 0.35s ease;
+}
+
+.u-panel-hover:hover {
+  border-color: rgb(var(--primary-rgb) / 0.45);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 50px -30px rgb(var(--primary-rgb) / 0.45);
+}
+
+.u-grid-lines {
+  background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 75%);
+}
+
+.u-brand-glow {
+  background: radial-gradient(circle at center, var(--brand-glow) 0%, transparent 68%);
+  filter: blur(8px);
+}
+
+/* --- Buttons & links ----------------------------------------------------- */
+
+.u-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.9rem 1.6rem;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease,
+    background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.u-btn:hover {
+  transform: translateY(-2px);
+}
+
+.u-btn:active {
+  transform: translateY(0);
+}
+
+.u-btn-sm {
+  padding: 0.7rem 1.25rem;
+  font-size: 0.8125rem;
+}
+
+.u-btn-primary {
+  background-color: var(--primary-color);
+  color: var(--text-on-primary);
+  box-shadow: 0 12px 28px -14px rgb(var(--primary-rgb) / 0.75);
+}
+
+.u-btn-primary:hover {
+  box-shadow: 0 20px 38px -16px rgb(var(--primary-rgb) / 0.85);
+}
+
+/* Diagonal sheen sweep on hover */
+.u-btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.28) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.u-btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+.u-btn-ghost {
+  background-color: transparent;
+  color: var(--ink);
+  border: 1px solid var(--hairline-strong);
+}
+
+.u-btn-ghost:hover {
+  border-color: var(--primary-color);
+  background-color: var(--brand-tint);
+}
+
+/* Nav / inline link with an underline that draws in from the left */
+.u-underline {
+  position: relative;
+}
+
+.u-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.u-underline:hover::after,
+.u-underline[data-active='true']::after {
+  transform: scaleX(1);
+}
+
+/* --- Form controls ------------------------------------------------------- */
+
+.u-field {
+  width: 100%;
+  background-color: transparent;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 0.875rem;
+  padding: 0.9rem 1rem;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.u-field::placeholder {
+  color: var(--ink-faint);
+}
+
+.user-shell .u-field:focus {
+  outline: none;
+  background-color: var(--brand-tint);
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 4px rgb(var(--primary-rgb) / 0.14);
+}
+
+.dark .user-shell .u-field {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+  border-color: var(--hairline-strong) !important;
+  color: var(--ink) !important;
+}
+
+.u-field-invalid,
+.user-shell .u-field-invalid:focus {
+  border-color: #e11d48 !important;
+  box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.12);
+}
+
+/* --- Motion -------------------------------------------------------------- */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Used by the admin views (animate-fade-in) and the user site alike */
+.animate-fade-in {
+  animation: fade-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes u-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--u-rotate, 0deg));
+  }
+  50% {
+    transform: translateY(-14px) rotate(var(--u-rotate, 0deg));
+  }
+}
+
+.u-float {
+  animation: u-float 7s ease-in-out infinite;
+}
+
+.u-float-slow {
+  animation: u-float 11s ease-in-out infinite;
+}
+
+@keyframes u-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.u-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: u-marquee 34s linear infinite;
+}
+
+.u-marquee:hover .u-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes u-shimmer {
+  from {
+    background-position: -180% 0;
+  }
+  to {
+    background-position: 180% 0;
+  }
+}
+
+.u-skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--hairline) 0%,
+    color-mix(in oklab, var(--hairline) 40%, transparent) 40%,
+    var(--hairline) 80%
+  );
+  background-size: 220% 100%;
+  animation: u-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes u-ring {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.65;
+  }
+  70%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.u-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--primary-color);
+  animation: u-ring 2.8s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-float,
+  .u-float-slow,
+  .u-marquee-track,
+  .u-skeleton,
+  .u-ring::before,
+  .animate-fade-in {
+    animation: none !important;
+  }
+
+  .u-btn:hover,
+  .u-panel-hover:hover {
+    transform: none;
+  }
 }
 
 /* Custom Scrollbars */

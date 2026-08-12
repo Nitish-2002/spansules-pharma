@@ -8,8 +8,8 @@ export declare class SalesController {
         createdAt: Date;
         updatedAt: Date;
         code: string;
-        contact: string;
         email: string;
+        contact: string;
         phone: string;
         address: string;
     }[]>;
@@ -19,8 +19,8 @@ export declare class SalesController {
         createdAt: Date;
         updatedAt: Date;
         code: string;
-        contact: string;
         email: string;
+        contact: string;
         phone: string;
         address: string;
     }>;
@@ -31,8 +31,8 @@ export declare class SalesController {
             createdAt: Date;
             updatedAt: Date;
             code: string;
-            contact: string;
             email: string;
+            contact: string;
             phone: string;
             address: string;
         };
@@ -48,8 +48,8 @@ export declare class SalesController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        totalAmount: number;
         status: string;
+        totalAmount: number;
         invoiceNumber: string;
         customerId: string;
         saleDate: Date;
@@ -66,8 +66,8 @@ export declare class SalesController {
         id: string;
         createdAt: Date;
         updatedAt: Date;
-        totalAmount: number;
         status: string;
+        totalAmount: number;
         invoiceNumber: string;
         customerId: string;
         saleDate: Date;

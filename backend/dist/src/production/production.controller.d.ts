@@ -8,9 +8,9 @@ export declare class ProductionController {
             name: string;
             createdAt: Date;
             updatedAt: Date;
-            type: import("@prisma/client").$Enums.ItemType;
             code: string;
             description: string | null;
+            type: import("@prisma/client").$Enums.ItemType;
             unit: string;
             quantity: number;
             minStock: number;
@@ -29,9 +29,9 @@ export declare class ProductionController {
         createdAt: Date;
         updatedAt: Date;
         quantity: number;
-        status: string;
-        medicineId: string;
         batchNumber: string;
+        medicineId: string;
+        status: string;
         startDate: Date;
         endDate: Date | null;
     })[]>;
@@ -45,9 +45,9 @@ export declare class ProductionController {
             name: string;
             createdAt: Date;
             updatedAt: Date;
-            type: import("@prisma/client").$Enums.ItemType;
             code: string;
             description: string | null;
+            type: import("@prisma/client").$Enums.ItemType;
             unit: string;
             quantity: number;
             minStock: number;
@@ -66,9 +66,9 @@ export declare class ProductionController {
         createdAt: Date;
         updatedAt: Date;
         quantity: number;
-        status: string;
-        medicineId: string;
         batchNumber: string;
+        medicineId: string;
+        status: string;
         startDate: Date;
         endDate: Date | null;
     }>;
@@ -91,9 +91,9 @@ export declare class ProductionController {
         createdAt: Date;
         updatedAt: Date;
         quantity: number;
-        status: string;
-        medicineId: string;
         batchNumber: string;
+        medicineId: string;
+        status: string;
         startDate: Date;
         endDate: Date | null;
     }>;

@@ -8,9 +8,9 @@ export declare class StoreController {
         name: string;
         createdAt: Date;
         updatedAt: Date;
-        type: import("@prisma/client").$Enums.ItemType;
         code: string;
         description: string | null;
+        type: import("@prisma/client").$Enums.ItemType;
         unit: string;
         quantity: number;
         minStock: number;
@@ -28,9 +28,9 @@ export declare class StoreController {
         name: string;
         createdAt: Date;
         updatedAt: Date;
-        type: import("@prisma/client").$Enums.ItemType;
         code: string;
         description: string | null;
+        type: import("@prisma/client").$Enums.ItemType;
         unit: string;
         quantity: number;
         minStock: number;
@@ -42,9 +42,9 @@ export declare class StoreController {
         name: string;
         createdAt: Date;
         updatedAt: Date;
-        type: import("@prisma/client").$Enums.ItemType;
         code: string;
         description: string | null;
+        type: import("@prisma/client").$Enums.ItemType;
         unit: string;
         quantity: number;
         minStock: number;

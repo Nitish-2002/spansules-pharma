@@ -1,8 +1,17 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { getTranslation, Language } from '@/lib/i18n';
+import { getTranslation } from '@/lib/i18n';
 import { api } from '@/lib/api';
+import {
+  AppTheme,
+  DEFAULT_THEME,
+  applyTheme,
+  normalizeTheme,
+  notifyThemeChanged,
+  useDarkMode,
+  useLanguage,
+} from '@/lib/theme';
 import { Sidebar, TopBar } from '@/components';
 import { 
   LayoutDashboard, 
@@ -26,7 +35,9 @@ import {
 } from '@/views';
 
 export default function SpansulesDashboard() {
-  const [lang, setLang] = useState<Language>('en');
+  // Language, dark mode and the active theme are shared with the customer site
+  const { lang, setLang } = useLanguage();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
   const t = getTranslation(lang);
 
   // Active module synced to URL query parameter
@@ -54,43 +65,8 @@ export default function SpansulesDashboard() {
   // Sidebar toggle state
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
-  // Dark theme toggle state
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        setIsDarkMode(true);
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const nextVal = !isDarkMode;
-    setIsDarkMode(nextVal);
-    if (typeof window !== 'undefined') {
-      if (nextVal) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      }
-    }
-  };
-
-  // Dynamic Theme state (read from database and update CSS Custom Properties)
-  const [theme, setTheme] = useState({
-    primaryColor: '#0f5132',
-    secondaryColor: '#d1e7dd',
-    backgroundColor: '#f8fafc',
-    fontFamily: "'Outfit', sans-serif",
-    logoUrl: '/images/logo.png'
-  });
+  // Dynamic Theme state (read from database and painted onto CSS variables)
+  const [theme, setTheme] = useState<AppTheme>(DEFAULT_THEME);
 
   // Data states
   const [themes, setThemes] = useState<any[]>([]);
@@ -119,13 +95,10 @@ export default function SpansulesDashboard() {
     try {
       const activeThemeData = await api.getActiveTheme();
       if (activeThemeData) {
-        setTheme({
-          primaryColor: activeThemeData.primaryColor || '#0f5132',
-          secondaryColor: activeThemeData.secondaryColor || '#d1e7dd',
-          backgroundColor: activeThemeData.backgroundColor || '#f8fafc',
-          fontFamily: activeThemeData.fontFamily || "'Outfit', sans-serif",
-          logoUrl: activeThemeData.logoUrl || '/images/logo.png'
-        });
+        const activeTheme = normalizeTheme(activeThemeData);
+        setTheme(activeTheme);
+        // Let the customer site (open in another tab) restyle immediately
+        notifyThemeChanged(activeTheme);
       }
 
       const allThemes = await api.getThemes();
@@ -159,22 +132,9 @@ export default function SpansulesDashboard() {
     }
   };
 
-  // Sync theme choices and active language to CSS font variables globally
+  // Sync theme colours and language fonts to CSS variables globally
   useEffect(() => {
-    const root = document.documentElement;
-    root.style.setProperty('--primary-color', theme.primaryColor);
-    root.style.setProperty('--secondary-color', theme.secondaryColor);
-    root.style.setProperty('--background', theme.backgroundColor);
-    
-    if (lang === 'te') {
-      root.style.setProperty('--font-header', 'var(--font-te)');
-      root.style.setProperty('--font-body', 'var(--font-te)');
-      root.style.setProperty('--font-family', 'var(--font-te)');
-    } else {
-      root.style.setProperty('--font-header', 'var(--font-header-en)');
-      root.style.setProperty('--font-body', 'var(--font-body-en)');
-      root.style.setProperty('--font-family', 'var(--font-body-en)');
-    }
+    applyTheme(theme, lang);
   }, [theme, lang]);
 
   useEffect(() => {
@@ -312,7 +272,7 @@ export default function SpansulesDashboard() {
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           t={t}
           isDarkMode={isDarkMode}
-          onToggleTheme={toggleTheme}
+          onToggleTheme={toggleDarkMode}
         />
 
         {/* SCROLLABLE MAIN CONTENT */}
