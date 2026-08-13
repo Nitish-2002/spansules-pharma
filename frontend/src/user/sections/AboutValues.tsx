@@ -17,7 +17,7 @@ export default function AboutValues() {
   const { t } = useSite();
 
   return (
-    <section className="py-24 sm:py-32 border-t border-[var(--hairline)]">
+    <section className="py-16 sm:py-24 lg:py-32 border-t border-[var(--hairline)]">
       <Container size="wide">
         <SectionHeading
           index="03"
@@ -28,7 +28,7 @@ export default function AboutValues() {
         />
 
         {/* Hairline grid rather than cards — quieter, more editorial */}
-        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-x-14 mt-16" step={0.07}>
+        <Stagger className="grid grid-cols-1 md:grid-cols-2 gap-x-10 lg:gap-x-14 mt-10 sm:mt-16" step={0.07}>
           {VALUES.map((value, index) => (
             <StaggerItem key={value.titleKey}>
               <div className="py-9 border-t border-[var(--hairline)] group">

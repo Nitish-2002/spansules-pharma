@@ -67,14 +67,14 @@ export default function HomeHero() {
 
             <motion.dl
               {...rise(0.32)}
-              className="mt-14 grid grid-cols-3 gap-6 sm:gap-10 max-w-xl border-t border-[var(--hairline)] pt-8"
+              className="mt-10 sm:mt-14 grid grid-cols-3 gap-3 sm:gap-10 max-w-xl border-t border-[var(--hairline)] pt-6 sm:pt-8"
             >
               {stats.map((stat) => (
-                <div key={stat.labelKey}>
+                <div key={stat.labelKey} className="min-w-0">
                   <dt className="u-eyebrow text-[10px] text-[var(--ink-faint)] leading-relaxed">
                     {t(stat.labelKey)}
                   </dt>
-                  <dd className="u-display text-3xl sm:text-4xl mt-2">{stat.value}</dd>
+                  <dd className="u-display text-2xl sm:text-4xl mt-2">{stat.value}</dd>
                 </div>
               ))}
             </motion.dl>
@@ -88,7 +88,7 @@ export default function HomeHero() {
             className="lg:col-span-5 relative"
           >
             {/* No overflow clipping — the proof chips deliberately break the frame */}
-            <div className="u-panel rounded-[2.5rem] p-6 sm:p-10 relative">
+            <div className="u-panel rounded-[1.75rem] sm:rounded-[2.5rem] p-5 sm:p-8 lg:p-10 relative">
               <CapsuleVisual className="w-full h-auto u-float-slow" />
 
               {/* Floating proof chips */}

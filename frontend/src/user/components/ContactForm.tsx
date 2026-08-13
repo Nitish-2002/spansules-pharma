@@ -73,7 +73,7 @@ export default function ContactForm() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="u-panel rounded-[2rem] p-10 sm:p-14 text-center"
+        className="u-panel rounded-[1.75rem] sm:rounded-[2rem] p-8 sm:p-11 lg:p-14 text-center"
         role="status"
       >
         <span
@@ -98,7 +98,7 @@ export default function ContactForm() {
   const isSubmitting = status === 'submitting';
 
   return (
-    <form onSubmit={onSubmit} className="u-panel rounded-[2rem] p-7 sm:p-10" noValidate>
+    <form onSubmit={onSubmit} className="u-panel rounded-[1.75rem] sm:rounded-[2rem] p-6 sm:p-8 lg:p-10" noValidate>
       <h2 className="u-display u-display-md">{t('contactFormTitle')}</h2>
       <p className="u-lead mt-3 text-sm sm:text-base">{t('contactFormLead')}</p>
 

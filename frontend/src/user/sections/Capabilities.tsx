@@ -54,7 +54,7 @@ export default function Capabilities() {
   ];
 
   return (
-    <section className="py-24 sm:py-32">
+    <section className="py-16 sm:py-24 lg:py-32">
       <Container size="wide">
         <SectionHeading
           index="01"
@@ -65,9 +65,9 @@ export default function Capabilities() {
         />
 
         {/* Bento: one tall feature tile beside a set of smaller ones */}
-        <Stagger className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-16" step={0.07}>
+        <Stagger className="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-10 sm:mt-16" step={0.07}>
           <StaggerItem className="lg:col-span-2 lg:row-span-2">
-            <div className="u-panel u-panel-hover rounded-[2rem] p-8 sm:p-10 h-full flex flex-col overflow-hidden relative">
+            <div className="u-panel u-panel-hover rounded-[1.75rem] sm:rounded-[2rem] p-6 sm:p-8 lg:p-10 h-full flex flex-col overflow-hidden relative">
               <span
                 className="u-eyebrow text-[10px] px-3 py-1.5 rounded-full self-start"
                 style={{ backgroundColor: 'var(--brand-tint-strong)', color: 'var(--primary-color)' }}
@@ -92,7 +92,7 @@ export default function Capabilities() {
 
           {rest.map((item) => (
             <StaggerItem key={item.titleKey} className={item.span}>
-              <div className="u-panel u-panel-hover rounded-[2rem] p-7 sm:p-8 h-full">
+              <div className="u-panel u-panel-hover rounded-[1.75rem] sm:rounded-[2rem] p-6 sm:p-7 lg:p-8 h-full">
                 <IconBadge>{item.icon}</IconBadge>
                 <h3 className="text-lg font-semibold mt-6 tracking-tight">{t(item.titleKey)}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-[var(--ink-muted)]">

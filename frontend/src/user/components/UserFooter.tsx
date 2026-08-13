@@ -147,7 +147,7 @@ export default function UserFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-[var(--hairline)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-[var(--hairline)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <p className="text-xs text-[var(--ink-faint)]">
             © {new Date().getFullYear()} {t('brandName')}. {t('footerRights')}
           </p>

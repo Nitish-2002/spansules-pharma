@@ -129,10 +129,10 @@ export default function ProductsPage() {
       </section>
 
       {/* Custom brief note */}
-      <section className="pb-24 sm:pb-28">
+      <section className="pb-16 sm:pb-24 lg:pb-28">
         <Container size="wide">
           <Reveal>
-            <div className="u-panel rounded-[2rem] p-8 sm:p-12 flex flex-col lg:flex-row lg:items-center gap-8 justify-between">
+            <div className="u-panel rounded-[1.75rem] sm:rounded-[2rem] p-6 sm:p-9 lg:p-12 flex flex-col lg:flex-row lg:items-center gap-8 justify-between">
               <div className="max-w-2xl">
                 <h2 className="u-display u-display-md">{t('productsNoteTitle')}</h2>
                 <p className="u-lead mt-4 text-sm sm:text-base">{t('productsNoteDesc')}</p>

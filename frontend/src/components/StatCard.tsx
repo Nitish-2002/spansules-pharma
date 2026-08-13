@@ -9,13 +9,13 @@ interface StatCardProps {
 
 export default function StatCard({ label, value, badge, icon }: StatCardProps) {
   return (
-    <div className="glass-card p-6 rounded-3xl flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-      <div>
-        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{label}</span>
-        <h3 className="text-2xl font-bold text-gray-800 mt-1.5 tracking-tight">{value}</h3>
+    <div className="glass-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl flex items-center justify-between gap-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+      <div className="min-w-0">
+        <span className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider sm:tracking-widest">{label}</span>
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mt-1.5 tracking-tight wrap-break-word">{value}</h3>
         {badge && <div className="mt-2">{badge}</div>}
       </div>
-      {icon && <div>{icon}</div>}
+      {icon && <div className="shrink-0">{icon}</div>}
     </div>
   );
 }

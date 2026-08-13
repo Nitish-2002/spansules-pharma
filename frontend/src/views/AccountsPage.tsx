@@ -25,7 +25,7 @@ export default function AccountsPage({
   const [filterType, setFilterType] = useState<'all' | 'payables' | 'receivables'>('all');
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
+    <div className="space-y-5 sm:space-y-8 max-w-7xl mx-auto animate-fade-in">
 
       {/* Header and Dropdown Switcher */}
       <PageHeader
@@ -45,60 +45,61 @@ export default function AccountsPage({
       />
 
       {/* Financial Balance Summary Card */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <GlassCard className="p-6">
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('totalCashOutflow')}</span>
-          <h3 className="text-3xl font-extrabold text-red-600 mt-2.5 tracking-tight">${accountsSummary.payable?.total || '42,500'}</h3>
-          <div className="mt-4 flex items-center justify-between text-xs font-semibold text-gray-500 border-t border-gray-100 pt-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <GlassCard className="p-4 sm:p-6">
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider sm:tracking-widest">{t('totalCashOutflow')}</span>
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-red-600 mt-2.5 tracking-tight wrap-break-word">${accountsSummary.payable?.total || '42,500'}</h3>
+          {/* Wraps rather than colliding when both figures are long */}
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs font-semibold text-gray-500 border-t border-gray-100 pt-3">
             <span>{t('paid')}: ${accountsSummary.payable?.paid || '0'}</span>
             <span>{t('outstandingLabel')}: ${accountsSummary.payable?.outstanding || '42,500'}</span>
           </div>
         </GlassCard>
-        <GlassCard className="p-6">
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('totalCashInflow')}</span>
-          <h3 className="text-3xl font-extrabold text-emerald-600 mt-2.5 tracking-tight">${accountsSummary.receivable?.total || '118,200'}</h3>
-          <div className="mt-4 flex items-center justify-between text-xs font-semibold text-gray-500 border-t border-gray-100 pt-3">
+        <GlassCard className="p-4 sm:p-6">
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider sm:tracking-widest">{t('totalCashInflow')}</span>
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-2.5 tracking-tight wrap-break-word">${accountsSummary.receivable?.total || '118,200'}</h3>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs font-semibold text-gray-500 border-t border-gray-100 pt-3">
             <span>{t('received')}: ${accountsSummary.receivable?.paid || '0'}</span>
             <span>{t('outstandingLabel')}: ${accountsSummary.receivable?.outstanding || '118,200'}</span>
           </div>
         </GlassCard>
-        <div className="p-6 rounded-3xl text-white shadow-xl premium-shadow" style={{ backgroundColor: 'var(--primary-color)' }}>
-          <span className="text-[10px] font-bold text-emerald-200 uppercase tracking-widest">{t('netCashFlowBalance')}</span>
-          <h3 className="text-3xl font-extrabold mt-2.5 tracking-tight">${accountsSummary.cashFlow || '75,700'}</h3>
+        <div className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl text-white shadow-xl premium-shadow" style={{ backgroundColor: 'var(--primary-color)' }}>
+          <span className="text-[10px] font-bold text-emerald-200 uppercase tracking-wider sm:tracking-widest">{t('netCashFlowBalance')}</span>
+          <h3 className="text-2xl sm:text-3xl font-extrabold mt-2.5 tracking-tight wrap-break-word">${accountsSummary.cashFlow || '75,700'}</h3>
           <p className="text-[10px] text-emerald-200/80 mt-4 font-light border-t border-white/10 pt-3 leading-relaxed">{t('cashFlowSubtitle')}</p>
         </div>
       </div>
 
       {/* Lists Grid Filtered dynamically */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8">
 
         {/* Accounts Payable list */}
         {(filterType === 'all' || filterType === 'payables') && (
-          <div className={`glass-card rounded-3xl overflow-hidden flex flex-col ${filterType === 'payables' ? 'lg:col-span-2' : ''}`}>
-            <div className="p-6 border-b border-gray-100 bg-red-50/20">
+          <div className={`glass-card rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col min-w-0 ${filterType === 'payables' ? 'lg:col-span-2' : ''}`}>
+            <div className="p-4 sm:p-6 border-b border-gray-100 bg-red-50/20">
               <h3 className="font-bold text-lg text-red-950">{t('payablesToVendors')}</h3>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-sm">
+            <div className="w-full min-w-0 overflow-x-auto overscroll-x-contain">
+              <table className="w-full min-w-max text-left border-collapse text-sm">
                 <thead>
                   <tr className="bg-gray-50/50 text-gray-500 text-xs font-bold uppercase border-b border-gray-100">
-                    <th className="px-6 py-4">{t('refPo')}</th>
-                    <th className="px-6 py-4">Vendor</th>
-                    <th className="px-6 py-4 text-right">{t('amount')}</th>
-                    <th className="px-6 py-4 text-center">{t('status')}</th>
-                    <th className="px-6 py-4 text-right">{t('actions')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">{t('refPo')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">Vendor</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-right whitespace-nowrap">{t('amount')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-center whitespace-nowrap">{t('status')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-right whitespace-nowrap">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100/50">
                   {payables.map((item) => (
                     <tr key={item.id} className="hover:bg-white/40">
-                      <td className="px-6 py-4.5 font-mono text-xs text-gray-400">{item.purchase?.poNumber}</td>
-                      <td className="px-6 py-4.5 font-bold text-gray-800">{item.purchase?.vendor?.name}</td>
-                      <td className="px-6 py-4.5 text-right font-extrabold text-gray-700">${item.amount}</td>
-                      <td className="px-6 py-4.5 text-center">
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 font-mono text-xs text-gray-400">{item.purchase?.poNumber}</td>
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 font-bold text-gray-800">{item.purchase?.vendor?.name}</td>
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 text-right font-extrabold text-gray-700">${item.amount}</td>
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 text-center">
                         <StatusBadge status={item.status} variant={item.status === 'PAID' ? 'success' : 'danger'} />
                       </td>
-                      <td className="px-6 py-4.5 text-right">
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 text-right">
                         {item.status !== 'PAID' && (
                           <button
                             onClick={() => handlePayBill(item.id, item.amount - item.paidAmount)}
@@ -123,31 +124,31 @@ export default function AccountsPage({
 
         {/* Accounts Receivable list */}
         {(filterType === 'all' || filterType === 'receivables') && (
-          <div className={`glass-card rounded-3xl overflow-hidden flex flex-col ${filterType === 'receivables' ? 'lg:col-span-2' : ''}`}>
-            <div className="p-6 border-b border-gray-100" style={{ backgroundColor: 'var(--secondary-color)' }}>
+          <div className={`glass-card rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col min-w-0 ${filterType === 'receivables' ? 'lg:col-span-2' : ''}`}>
+            <div className="p-4 sm:p-6 border-b border-gray-100" style={{ backgroundColor: 'var(--secondary-color)' }}>
               <h3 className="font-bold text-lg text-emerald-950" style={{ color: 'var(--primary-color)' }}>{t('receivablesFromCustomers')}</h3>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-sm">
+            <div className="w-full min-w-0 overflow-x-auto overscroll-x-contain">
+              <table className="w-full min-w-max text-left border-collapse text-sm">
                 <thead>
                   <tr className="bg-gray-50/50 text-gray-500 text-xs font-bold uppercase border-b border-gray-100">
-                    <th className="px-6 py-4">{t('refInv')}</th>
-                    <th className="px-6 py-4">Customer</th>
-                    <th className="px-6 py-4 text-right">{t('amount')}</th>
-                    <th className="px-6 py-4 text-center">{t('status')}</th>
-                    <th className="px-6 py-4 text-right">{t('actions')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">{t('refInv')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 whitespace-nowrap">Customer</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-right whitespace-nowrap">{t('amount')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-center whitespace-nowrap">{t('status')}</th>
+                    <th className="px-4 sm:px-6 py-3.5 sm:py-4 text-right whitespace-nowrap">{t('actions')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100/50">
                   {receivables.map((item) => (
                     <tr key={item.id} className="hover:bg-white/40">
-                      <td className="px-6 py-4.5 font-mono text-xs text-gray-400">{item.sale?.invoiceNumber}</td>
-                      <td className="px-6 py-4.5 font-bold text-gray-800">{item.sale?.customer?.name}</td>
-                      <td className="px-6 py-4.5 text-right font-extrabold text-gray-700">${item.amount}</td>
-                      <td className="px-6 py-4.5 text-center">
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 font-mono text-xs text-gray-400">{item.sale?.invoiceNumber}</td>
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 font-bold text-gray-800">{item.sale?.customer?.name}</td>
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 text-right font-extrabold text-gray-700">${item.amount}</td>
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 text-center">
                         <StatusBadge status={item.status} variant={item.status === 'PAID' ? 'success' : 'danger'} />
                       </td>
-                      <td className="px-6 py-4.5 text-right">
+                      <td className="px-4 sm:px-6 py-3.5 sm:py-4.5 text-right">
                         {item.status !== 'PAID' && (
                           <button
                             onClick={() => handleReceivePayment(item.id, item.amount - item.paidAmount)}

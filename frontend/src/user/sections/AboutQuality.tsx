@@ -27,9 +27,9 @@ export default function AboutQuality() {
   const { t } = useSite();
 
   return (
-    <section className="py-24 sm:py-32 border-t border-[var(--hairline)]">
+    <section className="py-16 sm:py-24 lg:py-32 border-t border-[var(--hairline)]">
       <Container size="wide">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16">
           <div className="lg:col-span-5">
             <SectionHeading
               index="04"

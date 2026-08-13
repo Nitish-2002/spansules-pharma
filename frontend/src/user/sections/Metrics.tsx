@@ -17,11 +17,11 @@ export default function Metrics() {
   const { t } = useSite();
 
   return (
-    <section className="py-24 sm:py-32">
+    <section className="py-16 sm:py-24 lg:py-32">
       <Container size="wide">
         <Reveal>
           <div
-            className="rounded-[2.5rem] px-8 sm:px-14 py-14 sm:py-20 relative overflow-hidden"
+            className="rounded-[1.75rem] sm:rounded-[2.5rem] px-6 sm:px-10 lg:px-14 py-10 sm:py-16 lg:py-20 relative overflow-hidden"
             style={{ backgroundColor: 'var(--primary-color)', color: 'var(--text-on-primary)' }}
           >
             {/* Hairline grid, drawn in the on-primary ink */}
@@ -35,22 +35,22 @@ export default function Metrics() {
               aria-hidden="true"
             />
 
-            <div className="relative flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-              <div>
+            <div className="relative flex flex-col lg:flex-row lg:items-end justify-between gap-5 lg:gap-6">
+              <div className="min-w-0">
                 <span className="u-eyebrow opacity-60">{t('homeMetricsEyebrow')}</span>
                 <h2 className="u-display u-display-lg mt-4">{t('homeMetricsTitle')}</h2>
               </div>
-              <p className="text-xs opacity-60 max-w-56">{t('homeMetricsNote')}</p>
+              <p className="text-xs opacity-60 lg:max-w-56">{t('homeMetricsNote')}</p>
             </div>
 
-            <dl className="relative grid grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-8 mt-16">
+            <dl className="relative grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-8 sm:gap-8 mt-10 sm:mt-16">
               {METRICS.map((metric) => (
                 <div
                   key={metric.labelKey}
-                  className="border-t pt-6"
+                  className="border-t pt-5 sm:pt-6 min-w-0"
                   style={{ borderColor: 'color-mix(in oklab, currentColor 28%, transparent)' }}
                 >
-                  <dd className="u-display text-4xl sm:text-5xl">
+                  <dd className="u-display text-3xl sm:text-4xl lg:text-5xl">
                     <Counter value={metric.value} suffix={metric.suffix} />
                   </dd>
                   <dt className="u-eyebrow text-[10px] mt-4 opacity-70 leading-relaxed">

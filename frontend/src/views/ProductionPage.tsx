@@ -27,11 +27,11 @@ export default function ProductionPage({
   handleCompleteBatch,
 }: ProductionPageProps) {
   return (
-    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="space-y-5 sm:space-y-8 max-w-7xl mx-auto animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
 
         {/* Form to Start Batch */}
-        <GlassCard className="p-6 h-fit">
+        <GlassCard className="p-4 sm:p-6 h-fit">
           <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Plus className="w-5 h-5 text-emerald-600" />
             {t('startNewBatch')}
@@ -54,22 +54,25 @@ export default function ProductionPage({
         </GlassCard>
 
         {/* Batch Progress Board */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-5 sm:space-y-6">
           {batches.map((batch) => (
-            <GlassCard key={batch.id} className="p-6 space-y-6">
-              <div className="flex items-center justify-between border-b border-gray-100/80 pb-4">
-                <div>
-                  <h4 className="font-bold text-lg text-gray-800">{t('batchNumber')}: {batch.batchNumber}</h4>
+            <GlassCard key={batch.id} className="p-4 sm:p-6 space-y-5 sm:space-y-6">
+              {/* Stacks on phones so the badge never squeezes the batch number */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100/80 pb-4">
+                <div className="min-w-0">
+                  <h4 className="font-bold text-base sm:text-lg text-gray-800">{t('batchNumber')}: {batch.batchNumber}</h4>
                   <p className="text-xs text-gray-400 mt-0.5">{t('medicine')}: {batch.medicine?.name} | {t('targetQuantity')}: {batch.quantity}</p>
                 </div>
-                <StatusBadge
-                  status={batch.status === 'IN_PROCESS' ? 'IN PROCESS' : 'COMPLETED'}
-                  variant={batch.status === 'IN_PROCESS' ? 'warning' : 'success'}
-                />
+                <div className="shrink-0 self-start sm:self-auto">
+                  <StatusBadge
+                    status={batch.status === 'IN_PROCESS' ? 'IN PROCESS' : 'COMPLETED'}
+                    variant={batch.status === 'IN_PROCESS' ? 'warning' : 'success'}
+                  />
+                </div>
               </div>
 
               {/* Process Steps */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                 {batch.inProcessSteps?.map((step: any, idx: number) => (
                   <div key={step.id} className="text-center relative border border-gray-100/50 p-3 rounded-2xl bg-white/30 backdrop-blur-sm">
                     <div className="text-[10px] uppercase font-bold text-gray-400 mb-3 tracking-wide">{step.stepName}</div>
@@ -114,7 +117,7 @@ export default function ProductionPage({
             </GlassCard>
           ))}
           {batches.length === 0 && (
-            <GlassCard className="p-12 text-center text-gray-400 font-medium">
+            <GlassCard className="p-8 sm:p-12 text-center text-gray-400 font-medium">
               {t('noActiveBatches')}
             </GlassCard>
           )}

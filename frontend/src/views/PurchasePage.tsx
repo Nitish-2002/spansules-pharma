@@ -36,11 +36,11 @@ export default function PurchasePage({
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="space-y-5 sm:space-y-8 max-w-7xl mx-auto animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
 
         {/* Add Vendor Form */}
-        <GlassCard className="p-6 h-fit">
+        <GlassCard className="p-4 sm:p-6 h-fit">
           <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Plus className="w-5 h-5 text-emerald-600" />
             {t('registerVendor')}
@@ -69,17 +69,17 @@ export default function PurchasePage({
         </GlassCard>
 
         {/* Vendors List & Purchase Orders */}
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-2 space-y-5 sm:space-y-8">
           {/* Vendors List */}
-          <div className="glass-card rounded-3xl overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100/80 flex items-center justify-between">
+          <div className="glass-card rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col min-w-0">
+            <div className="p-4 sm:p-6 border-b border-gray-100/80 flex items-center justify-between gap-3">
               <h3 className="font-bold text-lg text-gray-800">{t('vendors')}</h3>
             </div>
             <DataTable columns={vendorColumns} data={vendors} emptyMessage={t('noVendorsRegistered')} />
           </div>
 
           {/* Purchase Orders Creator */}
-          <GlassCard className="p-6">
+          <GlassCard className="p-4 sm:p-6">
             <h3 className="font-bold text-lg text-gray-800 mb-6">{t('createPurchaseOrder')}</h3>
             <form onSubmit={handleCreatePurchaseOrder} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 items-end">
               <FormField label={t('chooseVendor')}>

@@ -16,7 +16,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const stock = STOCK_STYLES[stockLevel(product)];
 
   return (
-    <article className="u-panel u-panel-hover rounded-3xl p-6 sm:p-7 flex flex-col relative overflow-hidden group h-full">
+    <article className="u-panel u-panel-hover rounded-3xl p-5 sm:p-6 lg:p-7 flex flex-col relative overflow-hidden group h-full">
       {/* Brand wash that fades in on hover */}
       <span
         aria-hidden="true"

@@ -40,6 +40,12 @@
   --font-sans: var(--font-body);
 }
 
+html {
+  /* Stop iOS from inflating text when a phone is rotated to landscape */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -47,6 +53,23 @@ body {
   overflow-x: hidden;
   letter-spacing: -0.01em;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Telugu compounds are long, unbreakable tokens — let any of them wrap rather
+   than push a container wider than the viewport. */
+h1, h2, h3, h4, h5, h6, p, span, a, li, dt, dd, th, td, label, button {
+  overflow-wrap: break-word;
+}
+
+/* Safari/iOS zooms the page in when a focused control's text is under 16px.
+   Keeping touch-size controls at 16px keeps every form usable on a phone. */
+@media (max-width: 639px) {
+  input:not([type='color']):not([type='checkbox']):not([type='radio']),
+  select,
+  textarea {
+    /* Beats the Tailwind `text-sm` / `.u-field` font sizes these controls carry */
+    font-size: 16px !important;
+  }
 }
 
 .dark body {
@@ -217,18 +240,34 @@ body[data-site='user'] {
 /* Editorial drop cap for the first paragraph of a long passage */
 .u-dropcap::first-letter {
   font-family: var(--font-header);
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   line-height: 0.82;
   float: left;
-  margin: 0.1rem 0.6rem 0 0;
+  margin: 0.1rem 0.5rem 0 0;
   color: var(--primary-color);
 }
 
+@media (min-width: 640px) {
+  .u-dropcap::first-letter {
+    font-size: 3.5rem;
+    margin: 0.1rem 0.6rem 0 0;
+  }
+}
+
 .u-eyebrow {
+  /* Wide tracking is what makes these labels overflow narrow columns, so it
+     tightens on phones — most of all for the longer Telugu strings. */
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 640px) {
+  .u-eyebrow {
+    letter-spacing: 0.22em;
+  }
 }
 
 .u-lead {
@@ -261,8 +300,16 @@ body[data-site='user'] {
 .u-grid-lines {
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px),
     linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
-  background-size: 72px 72px;
+  /* A tighter cell keeps the grid reading as texture rather than as a few
+     stray lines on a phone-width canvas */
+  background-size: 44px 44px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 75%);
+}
+
+@media (min-width: 640px) {
+  .u-grid-lines {
+    background-size: 72px 72px;
+  }
 }
 
 .u-brand-glow {

@@ -18,7 +18,7 @@ export default function AboutTimeline() {
   const { t } = useSite();
 
   return (
-    <section className="py-24 sm:py-32 border-t border-[var(--hairline)]">
+    <section className="py-16 sm:py-24 lg:py-32 border-t border-[var(--hairline)]">
       <Container size="wide">
         <SectionHeading
           index="02"
@@ -27,7 +27,7 @@ export default function AboutTimeline() {
           accent={t('aboutTimelineAccent')}
         />
 
-        <ol className="mt-16 max-w-4xl">
+        <ol className="mt-10 sm:mt-16 max-w-4xl">
           {MILESTONES.map((milestone, index) => (
             <li key={milestone.year}>
               <Reveal delay={index * 0.05}>

@@ -34,7 +34,7 @@ export default function CtaBand({
       <Container size="wide">
         <Reveal>
           <div
-            className="u-panel rounded-[2.5rem] px-8 sm:px-14 py-16 sm:py-20 relative overflow-hidden"
+            className="u-panel rounded-[1.75rem] sm:rounded-[2.5rem] px-6 sm:px-10 lg:px-14 py-12 sm:py-16 lg:py-20 relative overflow-hidden"
             style={{ backgroundColor: 'var(--brand-tint)' }}
           >
             <div

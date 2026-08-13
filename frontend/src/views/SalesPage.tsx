@@ -46,18 +46,19 @@ export default function SalesPage({
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
+    <div className="space-y-5 sm:space-y-8 max-w-7xl mx-auto animate-fade-in">
 
       {/* Top Sales Analytics Area Chart */}
-      <GlassCard className="p-6 sm:p-8">
+      <GlassCard className="p-4 sm:p-6 lg:p-8">
         <h3 className="font-bold text-gray-800 text-lg mb-1 tracking-tight">{t('analytics')}</h3>
         <p className="text-xs text-gray-400 mb-6">Interactive revenue metrics matching pharmacy sales databases</p>
-        <div className="h-[280px] w-full">
+        <div className="h-55 sm:h-70 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={currentChartData} margin={{ top: 20, right: 10, left: -10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
-              <YAxis stroke="#94a3b8" fontSize={11} />
+              {/* minTickGap drops labels that would collide on a narrow screen */}
+              <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} minTickGap={28} tickMargin={8} />
+              <YAxis stroke="#94a3b8" fontSize={11} width={56} />
               <Tooltip />
               <Legend />
               <Bar name="Sales Revenue" dataKey="revenue" fill="var(--primary-color)" radius={[6, 6, 0, 0]} />
@@ -66,9 +67,9 @@ export default function SalesPage({
         </div>
       </GlassCard>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
         {/* Register Customer Form */}
-        <GlassCard className="p-6 h-fit">
+        <GlassCard className="p-4 sm:p-6 h-fit">
           <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Plus className="w-5 h-5 text-emerald-600" />
             {t('registerCustomer')}
@@ -94,16 +95,16 @@ export default function SalesPage({
         </GlassCard>
 
         {/* Customers Table */}
-        <div className="lg:col-span-2 space-y-8">
-          <div className="glass-card rounded-3xl overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100/80">
+        <div className="lg:col-span-2 space-y-5 sm:space-y-8">
+          <div className="glass-card rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col min-w-0">
+            <div className="p-4 sm:p-6 border-b border-gray-100/80">
               <h3 className="font-bold text-lg text-gray-800">{t('customers')}</h3>
             </div>
             <DataTable columns={customerColumns} data={customers} emptyMessage={t('noCustomersRegistered')} />
           </div>
 
           {/* Create Sale Order */}
-          <GlassCard className="p-6">
+          <GlassCard className="p-4 sm:p-6">
             <h3 className="font-bold text-lg text-gray-800 mb-6">{t('createSaleInvoice')}</h3>
             <form onSubmit={handleCreateSalesOrder} className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-end">
               <FormField label={t('chooseCustomer')}>

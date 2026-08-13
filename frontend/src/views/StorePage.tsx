@@ -54,11 +54,11 @@ export default function StorePage({
   ];
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="space-y-5 sm:space-y-8 max-w-7xl mx-auto animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
 
         {/* Form to Create Item */}
-        <GlassCard className="p-6 h-fit">
+        <GlassCard className="p-4 sm:p-6 h-fit">
           <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Plus className="w-5 h-5 text-emerald-600" />
             {t('addItemInventory')}
@@ -117,8 +117,8 @@ export default function StorePage({
         </GlassCard>
 
         {/* Table list of Items */}
-        <div className="lg:col-span-2 glass-card rounded-3xl overflow-hidden flex flex-col">
-          <div className="p-6 border-b border-gray-100/80 flex items-center justify-between">
+        <div className="lg:col-span-2 glass-card rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col min-w-0">
+          <div className="p-4 sm:p-6 border-b border-gray-100/80 flex items-center justify-between gap-3">
             <h3 className="font-bold text-lg text-gray-800">{t('medicines')}</h3>
             <span className="text-xs bg-gray-100 text-gray-500 font-semibold px-3 py-1 rounded-full">{medicines.length} {t('totalItems')}</span>
           </div>

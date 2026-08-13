@@ -62,8 +62,51 @@ export default function SpansulesDashboard() {
     }
   };
 
-  // Sidebar toggle state
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  // The sidebar plays two roles, so it needs two flags rather than one:
+  // below `lg` it is an off-canvas drawer that must start closed on a phone,
+  // and from `lg` up it is a static column that must start visible.
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+
+  // `lg` matches the Tailwind breakpoint the sidebar switches layout at
+  const isDesktop = () =>
+    typeof window !== 'undefined' && window.matchMedia('(min-width: 1024px)').matches;
+
+  const toggleSidebar = () => {
+    if (isDesktop()) {
+      setIsSidebarCollapsed((collapsed) => !collapsed);
+    } else {
+      setIsDrawerOpen((open) => !open);
+    }
+  };
+
+  const closeSidebar = () => {
+    if (isDesktop()) {
+      setIsSidebarCollapsed(true);
+    } else {
+      setIsDrawerOpen(false);
+    }
+  };
+
+  // Keep the page behind the drawer from scrolling while it is open
+  useEffect(() => {
+    if (!isDrawerOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [isDrawerOpen]);
+
+  // Resizing up to desktop should never leave the mobile drawer latched open
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 1024px)');
+    const onChange = (event: MediaQueryListEvent) => {
+      if (event.matches) setIsDrawerOpen(false);
+    };
+    query.addEventListener('change', onChange);
+    return () => query.removeEventListener('change', onChange);
+  }, []);
 
   // Dynamic Theme state (read from database and painted onto CSS variables)
   const [theme, setTheme] = useState<AppTheme>(DEFAULT_THEME);
@@ -241,15 +284,19 @@ export default function SpansulesDashboard() {
   ];
 
   return (
-    <div className="flex h-screen overflow-hidden" style={{ backgroundColor: 'var(--background)', fontFamily: 'var(--font-family)' }}>
-      
+    // `h-dvh` tracks the visual viewport, so mobile browser chrome cannot clip
+    // the bottom of the layout the way `100vh` does.
+    <div className="flex h-dvh overflow-hidden" style={{ backgroundColor: 'var(--background)', fontFamily: 'var(--font-family)' }}>
+
       {/* SIDEBAR COMPONENT */}
       <Sidebar
         modules={sidebarModules}
         activeModule={activeModule}
         onModuleChange={changeModule}
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+        isDrawerOpen={isDrawerOpen}
+        isCollapsed={isSidebarCollapsed}
+        onClose={closeSidebar}
+        onNavigate={() => setIsDrawerOpen(false)}
         theme={theme}
         lang={lang}
         onLangChange={setLang}
@@ -257,26 +304,27 @@ export default function SpansulesDashboard() {
       />
 
       {/* OVERLAY FOR MOBILE SIDEBAR */}
-      {isSidebarOpen && (
-        <div 
-          onClick={() => setIsSidebarOpen(false)} 
-          className="fixed inset-0 bg-black/40 z-20 lg:hidden cursor-pointer"
+      {isDrawerOpen && (
+        <div
+          onClick={() => setIsDrawerOpen(false)}
+          aria-hidden="true"
+          className="fixed inset-0 bg-black/40 z-30 lg:hidden cursor-pointer"
         />
       )}
 
-      {/* MAIN CONTAINER */}
-      <main className="flex-1 flex flex-col overflow-hidden transition-all duration-300">
+      {/* MAIN CONTAINER — min-w-0 lets wide tables scroll instead of stretching the page */}
+      <main className="flex-1 min-w-0 flex flex-col overflow-hidden transition-all duration-300">
         {/* TOP BAR COMPONENT */}
         <TopBar
           activeModule={activeModule}
-          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          onToggleSidebar={toggleSidebar}
           t={t}
           isDarkMode={isDarkMode}
           onToggleTheme={toggleDarkMode}
         />
 
         {/* SCROLLABLE MAIN CONTENT */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-gray-50/50">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-6 lg:p-8 bg-gray-50/50">
 
           {activeModule === 'dashboard' && (
             <DashboardPage 

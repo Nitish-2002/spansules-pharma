@@ -28,7 +28,7 @@ export default function FeaturedProducts() {
     .slice(0, 3);
 
   return (
-    <section className="py-24 sm:py-32 border-t border-[var(--hairline)]">
+    <section className="py-16 sm:py-24 lg:py-32 border-t border-[var(--hairline)]">
       <Container size="wide">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <SectionHeading
@@ -43,7 +43,7 @@ export default function FeaturedProducts() {
           </div>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-10 sm:mt-16">
           {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
               {Array.from({ length: 3 }).map((_, index) => (

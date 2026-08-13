@@ -69,7 +69,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form + details */}
-      <section className="pb-24 sm:pb-32">
+      <section className="pb-16 sm:pb-24 lg:pb-32">
         <Container size="wide">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             <Reveal className="lg:col-span-7">
@@ -120,7 +120,7 @@ export default function ContactPage() {
 
               <Reveal delay={0.1}>
                 <div
-                  className="rounded-[1.75rem] p-7 mt-8"
+                  className="rounded-[1.75rem] p-6 sm:p-7 mt-8"
                   style={{ backgroundColor: 'var(--brand-tint)' }}
                 >
                   <h3 className="text-base font-semibold tracking-tight">
@@ -137,7 +137,7 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ */}
-      <section className="pb-24 sm:pb-32 border-t border-[var(--hairline)] pt-24 sm:pt-28">
+      <section className="pb-16 sm:pb-24 lg:pb-32 border-t border-[var(--hairline)] pt-16 sm:pt-24 lg:pt-28">
         <Container>
           <SectionHeading
             index="01"

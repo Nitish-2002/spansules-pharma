@@ -42,7 +42,7 @@ export function StatusPanel({
   onAction?: () => void;
 }) {
   return (
-    <div className="u-panel rounded-3xl px-8 py-16 text-center flex flex-col items-center">
+    <div className="u-panel rounded-3xl px-6 sm:px-8 py-12 sm:py-16 text-center flex flex-col items-center">
       <div
         className="w-14 h-14 rounded-2xl grid place-items-center mb-6"
         style={{ backgroundColor: 'var(--brand-tint-strong)', color: 'var(--primary-color)' }}

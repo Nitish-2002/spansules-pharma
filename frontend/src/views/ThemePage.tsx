@@ -25,11 +25,11 @@ export default function ThemePage({
   handleActivateTheme,
 }: ThemePageProps) {
   return (
-    <div className="space-y-8 max-w-7xl mx-auto animate-fade-in">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="space-y-5 sm:space-y-8 max-w-7xl mx-auto animate-fade-in">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 sm:gap-8">
 
         {/* Form to Custom Theme Creator */}
-        <GlassCard className="p-6 h-fit">
+        <GlassCard className="p-4 sm:p-6 h-fit">
           <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-emerald-600" />
             {t('themeCustomizer')}
@@ -64,7 +64,7 @@ export default function ThemePage({
         </GlassCard>
 
         {/* Theme Selection Board */}
-        <div className="lg:col-span-2 glass-card p-6 rounded-3xl">
+        <div className="lg:col-span-2 glass-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl">
           <h3 className="font-bold text-lg text-gray-800 mb-6">{t('activeTheme')}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {themes.map((themeItem) => (

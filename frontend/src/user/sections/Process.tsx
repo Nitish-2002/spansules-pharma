@@ -28,7 +28,7 @@ export default function Process() {
   const fill = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.5 });
 
   return (
-    <section className="py-24 sm:py-32 border-t border-[var(--hairline)]">
+    <section className="py-16 sm:py-24 lg:py-32 border-t border-[var(--hairline)]">
       <Container size="wide">
         <SectionHeading
           index="02"
@@ -38,7 +38,7 @@ export default function Process() {
           lead={t('homeProcessLead')}
         />
 
-        <div ref={trackRef} className="relative mt-16">
+        <div ref={trackRef} className="relative mt-10 sm:mt-16">
           {/* Rail: horizontal on desktop, vertical on mobile */}
           <div
             className="absolute left-[15px] top-2 bottom-2 w-px lg:left-0 lg:right-0 lg:top-[15px] lg:bottom-auto lg:h-px lg:w-full bg-[var(--hairline)]"

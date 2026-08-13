@@ -58,11 +58,12 @@ export default function UserHeader() {
         }}
       >
         <Container size="wide">
-          <div className="h-20 flex items-center justify-between gap-6">
-            {/* Brand */}
-            <Link href="/user" className="flex items-center gap-3 group shrink-0">
+          <div className="h-20 flex items-center justify-between gap-3 sm:gap-6">
+            {/* Brand — `min-w-0` lets the long Telugu brand name truncate rather
+                than shove the controls off the right edge of a phone. */}
+            <Link href="/user" className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
               <span
-                className="w-10 h-10 rounded-xl grid place-items-center overflow-hidden shrink-0 transition-transform duration-500 group-hover:scale-105"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl grid place-items-center overflow-hidden shrink-0 transition-transform duration-500 group-hover:scale-105"
                 style={{ backgroundColor: 'var(--primary-color)', color: 'var(--text-on-primary)' }}
               >
                 {theme.logoUrl ? (
@@ -73,11 +74,11 @@ export default function UserHeader() {
                   <span className="font-bold text-lg">S</span>
                 )}
               </span>
-              <span className="leading-none">
-                <span className="block u-display text-xl tracking-[0.14em] uppercase">
+              <span className="leading-none min-w-0">
+                <span className="block u-display text-base sm:text-xl tracking-[0.1em] sm:tracking-[0.14em] uppercase truncate">
                   {t('brandName')}
                 </span>
-                <span className="block u-eyebrow text-[10px] tracking-[0.16em] mt-1 text-[var(--ink-faint)]">
+                <span className="hidden sm:block u-eyebrow text-[10px] tracking-[0.16em] mt-1 text-[var(--ink-faint)] truncate">
                   {t('brandTagline')}
                 </span>
               </span>
@@ -103,7 +104,7 @@ export default function UserHeader() {
             </nav>
 
             {/* Controls */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
               <LanguageToggle className="hidden sm:inline-flex" />
 
               <button
@@ -111,7 +112,7 @@ export default function UserHeader() {
                 onClick={toggleDarkMode}
                 title={isDarkMode ? t('lightModeLabel') : t('darkModeLabel')}
                 aria-label={isDarkMode ? t('lightModeLabel') : t('darkModeLabel')}
-                className="w-10 h-10 rounded-full border border-[var(--hairline-strong)] grid place-items-center text-[var(--ink-muted)] hover:text-[var(--ink)] hover:border-[var(--primary-color)] transition-colors duration-300"
+                className="w-10 h-10 shrink-0 rounded-full border border-[var(--hairline-strong)] grid place-items-center text-[var(--ink-muted)] hover:text-[var(--ink)] hover:border-[var(--primary-color)] transition-colors duration-300"
               >
                 {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
               </button>
@@ -124,7 +125,7 @@ export default function UserHeader() {
                 type="button"
                 onClick={() => setIsMenuOpen(true)}
                 aria-label={t('menuLabel')}
-                className="lg:hidden w-10 h-10 rounded-full border border-[var(--hairline-strong)] grid place-items-center"
+                className="lg:hidden w-10 h-10 shrink-0 rounded-full border border-[var(--hairline-strong)] grid place-items-center"
               >
                 <Menu className="w-4 h-4" />
               </button>
@@ -174,7 +175,9 @@ export default function UserHeader() {
                   </button>
                 </div>
 
-                <nav className="flex-1 flex flex-col justify-center gap-2 pb-24">
+                {/* Scrolls when the viewport is short (phone in landscape) instead
+                    of pushing the language/CTA row out of reach */}
+                <nav className="flex-1 flex flex-col justify-center gap-2 py-6 pb-12 overflow-y-auto overscroll-contain">
                   {NAV_LINKS.map((link, index) => {
                     const active = isActiveNav(pathname, link.href);
                     return (
@@ -190,16 +193,16 @@ export default function UserHeader() {
                           className="flex items-baseline gap-4 py-3 border-b border-[var(--hairline)]"
                           style={{ color: active ? 'var(--primary-color)' : 'var(--ink)' }}
                         >
-                          <span className="u-eyebrow u-numeral text-[var(--ink-faint)]">
+                          <span className="u-eyebrow u-numeral text-[var(--ink-faint)] shrink-0">
                             0{index + 1}
                           </span>
-                          <span className="u-display text-4xl">{t(link.labelKey)}</span>
+                          <span className="u-display text-3xl sm:text-4xl min-w-0">{t(link.labelKey)}</span>
                         </Link>
                       </motion.div>
                     );
                   })}
 
-                  <div className="flex items-center justify-between gap-4 mt-10">
+                  <div className="flex flex-wrap items-center justify-between gap-4 mt-10">
                     <LanguageToggle />
                     <Link
                       href="/user/contact"
